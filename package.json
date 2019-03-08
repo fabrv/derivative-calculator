@@ -1,0 +1,35 @@
+{
+  "name": "derivate",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha -r ts-node/register src/**/*.spec.ts && tsc",
+    "start": "ts-node src/index",
+    "build": "tsc",
+    "build:live": "nodemon --exec ts-node src/index.ts"
+  },
+  "keywords": [
+    "math",
+    "expressions",
+    "parse",
+    "b-tree"
+  ],
+  "author": "Fabrizzio Rivera",
+  "license": "MIT",
+  "dependencies": {
+    "chalk": "^2.4.2",
+    "prompt-sync": "^4.1.6",
+    "chai": "^4.2.0",
+    "mocha": "^5.2.0"
+  },
+  "devDependencies": {
+    "@types/chai": "^4.1.6",
+    "@types/cors": "^2.8.4",
+    "@types/chalk": "^2.2.0",
+    "@types/minimist": "^1.2.0",
+    "@types/node": "^10.12.18",
+    "ts-node": "^7.0.1",
+    "typescript": "^3.2.4"
+  }
+}
