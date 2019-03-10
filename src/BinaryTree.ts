@@ -1,5 +1,3 @@
-import { finished } from "stream";
-
 class TNode{
   value: string
   key: number
@@ -11,6 +9,10 @@ class TNode{
 class BinaryTree{
   root: TNode = null
   constructor(){
+    this.root = new TNode
+    this.root.key = 5
+    this.root.value = 'goood'
+
     this.insertNode(10, 'test')
     this.insertNode(2, 'test 2')
     this.insertNode(12, 'test 2')

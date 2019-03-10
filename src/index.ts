@@ -1,6 +1,6 @@
-import Lexer from './Lexer';
+import { Lexer } from './Lexer';
 import BinaryTree from './BinaryTree';
-let app = Lexer
-let binaryTree = BinaryTree
+//let binaryTree = BinaryTree
+let lexer = new Lexer()
 
-console.log(Lexer.tokenize(process.argv[2]))
+console.log('final', lexer.expressionMapper(lexer.stringMap(process.argv[2])))
