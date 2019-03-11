@@ -9,5 +9,5 @@ npm i
 
 ## Run
 ```bash
-npm start "<algebra expression>"
+npm start "<expression>"
 ```

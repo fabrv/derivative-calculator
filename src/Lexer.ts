@@ -1,9 +1,15 @@
 import chalk from "chalk";
-export class Lexer{
-  groupers: {open: string, close: string} = {open: '(', close:')'}
-  tokens: Array<string> = ['*', '+', '-', '^', '/', '(', ')']
 
-  constructor(){
+export class Lexer{
+  groupers: {open: string, close: string}
+  tokens: Array<string>
+
+  expressions = []
+  constructor(operators: Array<string>, groupers: {open: string, close: string}){
+    this.tokens = operators
+    this.tokens.push(groupers.open)
+    this.tokens.push(groupers.close)
+    this.groupers = groupers
   }
 
   stringMap(string: string): Array<string>{
@@ -25,9 +31,37 @@ export class Lexer{
   }
 
   expressionMapper(data: Array<any>){
-    let groupsMapped = this.groupMapper(data)
-    
-    return groupsMapped
+    let expression = this.groupMapper(data)
+    for (let i = 0; i < this.tokens.length - 2; i++){
+      expression = this.expressionBuilder(expression, this.tokens[i])
+    }
+    return expression
+  }
+
+  expressionBuilder(data: Array<any>, operator: string){
+    for (let i = 0; i < data.length; i++){
+      if (data[i] instanceof Array){
+        this.expressionBuilder(data[i], operator)
+      } else if (data[i] instanceof Object){
+        data[i].left = this.expressionBuilder(data[i].left, operator)
+        data[i].right = this.expressionBuilder(data[i].right, operator)
+      }
+      if (data[i] == operator){
+        if (data[i - 1] && data[i + 1]){
+          let expression = {
+            operator: data[i],
+            left: this.expressionBuilder(data[i - 1], operator),
+            right: this.expressionBuilder(data[i + 1], operator)
+          }
+          data.splice(i - 1, i + 2, expression)
+          i -= 2
+        }else{
+          console.error(chalk.red(`Syntax error: Expression written improperly, ${operator} operator wihtout operands`))
+          return
+        }
+      }
+    }
+    return data
   }
 
   groupMapper(data: Array<any>){
