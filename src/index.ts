@@ -1,8 +1,13 @@
 import { Lexer } from './Lexer';
-import BinaryTree from './BinaryTree';
+import { ShuntingYard } from './ShuntingYard';
 //let binaryTree = BinaryTree
-let lexer = new Lexer(['^', '/', '*', '+', '-'], {open: '(', close:')'})
+const operators = ['-', '+', '*', '/', '^']
+let shuntingYard = new ShuntingYard(operators, {open: '(', close:')'})
+let lexer = new Lexer(operators)
 
-const stringMap: Array<string> = lexer.stringMap(process.argv[2])
-const expressionTree = lexer.expressionMapper(stringMap)
-console.log(JSON.stringify(expressionTree, null, 2))
+let shunt = shuntingYard.shunt(shuntingYard.tokenize(process.argv[2]))
+let string = shuntingYard.stringify(shunt)
+console.log(string)
+
+let binaryTree = lexer.expressionBuilder(shunt)
+console.log(JSON.stringify(binaryTree, null, 4))
