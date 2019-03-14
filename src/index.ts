@@ -15,4 +15,4 @@ console.log(JSON.stringify(binaryTree, null, 4))
 
 let derivator = new Derivator(binaryTree, operators)
 console.log('===================')
-console.log(JSON.stringify(derivator.derivate(binaryTree), null, 4))
+console.log(JSON.stringify(derivator.derivate(), null, 4))

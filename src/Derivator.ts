@@ -4,7 +4,7 @@ export class Derivator{
   _root: Expression
   _operators = []
   constructor(root: Expression, operators: Array<string>){
-    this._root = root
+    this._root = this.operate(root)
     this._operators = operators
   }
 
@@ -15,32 +15,36 @@ export class Derivator{
       this.treeTraverse(node.right)
     }
   }
-  
-  derivate(node: Expression){
+
+  operate(node: Expression){
     if (node != null){
-      node.left = this.derivate(node.left)
-      node.right = this.derivate(node.right)
+      node.left = this.operate(node.left)
+      node.right = this.operate(node.right)
 
       if (node.left != null && node.right != null){
         if (isNumber(node.left.operator) && isNumber(node.right.operator)){
           return this.operateNode(node)
         }
+      }
+    }
+    return node
+  }
+  
+  derivate(node: Expression = this._root){
+    if (node != null){
+      node.left = this.derivate(node.left)
+      node.right = this.derivate(node.right)
+
+      if (node.left != null && node.right != null){
         if (this._operators.indexOf(node.operator) == 4){
-          if (node.left.operator == 'x' && isNumber(node.right.operator)){
+          if (node.left.operator.includes('x') && isNumber(node.right.operator)){
             return this.powerDerivate(node)
           }
           if (node.left.operator == 'e' && isNumber(node.right.operattor)){
             return this.eDerivate(node)
           }
-        }        
+        }
       }
-      
-      /*if (isNumber(node.operator) && node.operator != 'x' && !this._operators.find(key => key == node.operator)){
-        console.log('test', node.operator)
-        return null
-      }*/
-      //console.log('===============================')
-      //console.log(JSON.stringify(node, null, 4))
     }
     return node
   }
@@ -85,11 +89,11 @@ export class Derivator{
       left: null,
       right: null
     }
-    let value = node.right.operator.replace('x', '')
-    if (value = ''){
+    let value = node.left.operator.replace('x', '')
+    if (value == ''){
       value = 1
     }else{
-      value = parseFloat(value)
+      value = parseInt(value)
     }
 
     result.operator = (parseFloat(node.right.operator) * value) + 'x^(' + (parseFloat(node.right.operator) - 1) + ')'
