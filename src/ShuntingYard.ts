@@ -45,11 +45,20 @@ export class ShuntingYard{
       if (this.tokens.find(key => key == data[i]) && (token != this.groupers.open && token != this.groupers.close)){
         let lastPrecedence = this.tokens.indexOf(stack[stack.length - 1])
         let currentPrecedence = this.tokens.indexOf(data[i])
+        if (lastPrecedence % 2){
+          lastPrecedence --
+        }
+        if (currentPrecedence % 2){
+          currentPrecedence --
+        }
         if (stack.length == 0){
           lastPrecedence = 0
         }
-        while (lastPrecedence >= currentPrecedence && stack[stack.length - 1] != this.groupers.open){
-          output.push(stack.pop())
+        while (lastPrecedence >= currentPrecedence && stack[stack.length - 1] != this.groupers.open && this.tokens.indexOf(data[i]) != 4){
+          const stackPop = stack.pop()
+          if (stackPop){
+            output.push(stackPop)
+          }
           lastPrecedence = this.tokens.indexOf(stack[stack.length - 1])
         }
         stack.push(data[i])
@@ -85,8 +94,4 @@ function isNullOrWhitespace (input: string): boolean {
   if (typeof input === 'undefined' || input == null) return true;
 
   return input.replace(/\s/g, '').length < 1;
-}
-
-function isNumber (input: any): boolean{
-  return !isNaN(input)
 }

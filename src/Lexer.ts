@@ -1,6 +1,6 @@
-import chalk from "chalk";
+//import chalk from "chalk";
 
-class Expression {
+export class Expression {
   operator: string
   left: any
   right: any
@@ -13,13 +13,18 @@ export class Lexer{
     this.operators = operators
   }
 
-  expressionBuilder(shunt: Array<string>): Array<any>{
+  expressionBuilder(shunt: Array<string>): Expression{
     let stack = []
     for (let i = 0; i < shunt.length; i++){
       if (!this.operators.find(key => key == shunt[i])){
-        stack.push(shunt[i])
+        const expression: Expression = {
+          operator: shunt[i],
+          right: null,
+          left: null
+        }
+        stack.push(expression)
       }else{
-        let expression: Expression = {
+        const expression: Expression = {
           operator: shunt[i],
           right: stack.pop(),
           left: stack.pop()
@@ -27,6 +32,6 @@ export class Lexer{
         stack.push(expression)
       }
     }
-    return stack
+    return stack[0]
   }
 }
