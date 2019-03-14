@@ -29,7 +29,10 @@ export class Derivator{
           if (node.left.operator == 'x' && isNumber(node.right.operator)){
             return this.powerDerivate(node)
           }
-        }
+          if (node.left.operator == 'e' && isNumber(node.right.operattor)){
+            return this.eDerivate(node)
+          }
+        }        
       }
       
       /*if (isNumber(node.operator) && node.operator != 'x' && !this._operators.find(key => key == node.operator)){
@@ -82,8 +85,26 @@ export class Derivator{
       left: null,
       right: null
     }
+    let value = node.right.operator.replace('x', '')
+    if (value = ''){
+      value = 1
+    }else{
+      value = parseFloat(value)
+    }
 
-    result.operator = node.right.operator + node.left.operator + '^(' + (parseFloat(node.right.operator) - 1) + ')'
+    result.operator = (parseFloat(node.right.operator) * value) + 'x^(' + (parseFloat(node.right.operator) - 1) + ')'
+
+    return result
+  }
+
+  eDerivate(node: Expression): Expression{
+    const result: Expression = {
+      operator: '',
+      left: null,
+      right: null
+    }
+    
+    result.operator = 'e^' + result.right
 
     return result
   }
