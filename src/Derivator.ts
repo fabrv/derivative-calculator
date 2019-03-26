@@ -108,7 +108,7 @@ export class Derivator{
       right: null
     }
     
-    result.operator = 'e^' + result.right
+    result.operator = 'e^' + result.right + '*' + this.derivate(result.right)
 
     return result
   }
